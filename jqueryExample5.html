@@ -1,0 +1,63 @@
+<!--dropdown menüsüne veri çekme-->
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dropdown Menüsü ile Veri Çekme</title>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"
+        integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+</head>
+
+<body>
+
+    <h2>Dropdown Menüsüne Veri Çekme</h2>
+
+    <label for="posts">Başlık Seçin:</label>
+    <select id="posts">
+        <option value="">Seçiniz...</option>
+       
+    </select>
+
+    <div id="selectedPostDetails">
+        
+    </div>
+
+    <script>
+        $(document).ready(function () {
+            
+            $.get('https://jsonplaceholder.typicode.com/posts', function (data) {
+                
+                $('#posts').empty();
+                $('#posts').append('<option value="">Seçiniz...</option>');
+
+                data.forEach(function (item) {
+                    $('#posts').append(`
+                        <option value="${item.id}">${item.title}</option>
+                    `);
+                });
+            }).fail(function () {
+                alert("Veriler alınırken bir hata oluştu!");
+            });
+
+            $('#posts').change(function () {
+                var postId = $(this).val(); 
+                if (postId) {
+                    $.get(`https://jsonplaceholder.typicode.com/posts/${postId}`, function (post) {
+                        $('#selectedPostDetails').html(`
+                            <h3>Başlık: ${post.title}</h3>
+                            <p>${post.body}</p>
+                        `);
+                    });
+                } else {
+                    $('#selectedPostDetails').html('Lütfen bir başlık seçin.');
+                }
+            });
+        });
+    </script>
+
+</body>
+
+</html>

@@ -1,0 +1,52 @@
+<!--input edilen verileri api adresine gönderme ve ekranda listeleme-->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"
+        integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+</head>
+
+<body>
+    <form id="dataForm">
+        <label for="name">İsim:</label>
+        <input type="text" id="name" required><br /><br>
+        <label for="message">Mesajınız:</label>
+        <textarea name="message" id="message"></textarea><br /><br>
+        <button type="submit">Gönder</button>
+    </form>
+
+    <div id="response"></div>
+
+    <script>
+        $(document).ready(function () { 
+            $('#dataForm').submit(function (e) {
+                e.preventDefault(); // Sayfanın yenilenmesini engeller
+
+                const formData = {
+                    name: $('#name').val(),
+                    message: $('#message').val()
+                };
+
+                // Veri gönderme işlemi
+                $.post('https://jsonplaceholder.typicode.com/posts', formData, function (data) {
+                    // JSON yanıtından gelen veriyi ekliyoruz
+                    $('#response').html(`
+                        <h4>Gönderilen Veri:</h4>
+                        <ul>
+                            <li>İsim: ${data.name}</li>
+                            <li>Mesaj: ${data.message}</li>
+                        </ul>
+                    `);
+                }).fail(function () {
+                    $('#response').html("Bir hata oluştu");
+                });
+            });
+        });
+    </script>
+</body>
+
+</html>

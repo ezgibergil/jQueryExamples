@@ -1,0 +1,56 @@
+<!--apiden çekilen verileri tabloda gösteriniz.-->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Veri Tablosu</title>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"
+        integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+  
+</head>
+
+<body>
+
+    <h2 style="text-align: center;">Verileri Tablo Olarak Görüntüle</h2>
+
+    <table id="dataTable" border="1px">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Başlık</th>
+                <th>Mesaj</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Veriler burada görünecek -->
+        </tbody>
+    </table>
+
+    <script>
+        $(document).ready(function () {
+            // API'den veri çekme
+            $.get('https://jsonplaceholder.typicode.com/posts', function (data) {
+                // Tabloyu temizle
+                $('#dataTable tbody').empty();
+
+                // API'den gelen veriyi tabloya ekleyin
+                data.forEach(function (item) {
+                    $('#dataTable tbody').append(`
+                        <tr>
+                            <td>${item.id}</td>
+                            <td>${item.title}</td>
+                            <td>${item.body}</td>
+                        </tr>
+                    `);
+                });
+            }).fail(function () {
+                alert("Veriler alınırken bir hata oluştu!");
+            });
+        });
+    </script>
+
+</body>
+
+</html>
